@@ -22,6 +22,8 @@ namespace DemoMedicine.Anatomy
         private bool isSeparated;
 
         public bool IsSeparated => isSeparated;
+        public float AnimationDuration => animationDuration;
+        public UnityEvent<bool> SeparationChanged => separationChanged;
 
         private void Awake()
         {
@@ -48,6 +50,34 @@ namespace DemoMedicine.Anatomy
         public void Assemble()
         {
             SetSeparated(false);
+        }
+
+        public void SetSeparatedImmediate(bool separated)
+        {
+            if (parts.Count == 0)
+            {
+                RebuildParts();
+            }
+
+            if (animationRoutine != null)
+            {
+                StopCoroutine(animationRoutine);
+                animationRoutine = null;
+            }
+
+            isSeparated = separated;
+
+            for (var i = 0; i < parts.Count; i++)
+            {
+                parts[i].Transform.localPosition = separated ? parts[i].SeparatedPosition : parts[i].OriginalPosition;
+            }
+
+            if (enableCollidersOnlyWhenSeparated)
+            {
+                SetPartCollidersEnabled(separated);
+            }
+
+            separationChanged.Invoke(separated);
         }
 
         public void SetSeparated(bool separated)

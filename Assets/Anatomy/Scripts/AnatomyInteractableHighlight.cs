@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace DemoMedicine.Anatomy
 {
@@ -9,6 +10,7 @@ namespace DemoMedicine.Anatomy
         [SerializeField] private Transform visualRoot;
         [SerializeField] private Color hoverColor = new Color(0.55f, 0.8f, 1f, 1f);
         [SerializeField] private Color selectedColor = new Color(1f, 0.75f, 0.35f, 1f);
+        [SerializeField] private bool ignoreSocketSelection = true;
 
         private readonly List<RendererState> rendererStates = new List<RendererState>();
         private UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable;
@@ -68,12 +70,22 @@ namespace DemoMedicine.Anatomy
 
         private void OnSelectEntered(SelectEnterEventArgs args)
         {
+            if (ignoreSocketSelection && args.interactorObject is XRSocketInteractor)
+            {
+                return;
+            }
+
             isSelected = true;
             RefreshVisuals();
         }
 
         private void OnSelectExited(SelectExitEventArgs args)
         {
+            if (ignoreSocketSelection && args.interactorObject is XRSocketInteractor)
+            {
+                return;
+            }
+
             isSelected = false;
             RefreshVisuals();
         }
