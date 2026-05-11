@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7847328559471687356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8510775167707353074}
+  - component: {fileID: 2028216011148397849}
+  m_Layer: 0
+  m_Name: PF_Distal phalanx of right thumb
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8510775167707353074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847328559471687356}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7872263299568392185}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2028216011148397849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7847328559471687356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c6c22da58b83d44b4cbf9ef57a0c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: Distal phalanx of right thumb
+  fmaId: FMA24459
+  bodySystem: Skeletal
+  region: Right Hand
+  layerName: Skeletal
+  sourceFileId: FJ715
+  representationId: BP62634
+  sourceAssetPath: Assets/External Assets/Medicine/BP13928_FMA3_0_partof_FMA7480_Right_Hand/FJ715_BP62634_FMA24459_Distal
+    phalanx of right thumb.obj
+  sourceBoundsMin: {x: -324.651, y: -169.658, z: 729.334}
+  sourceBoundsMax: {x: -311.087, y: -153.435, z: 752.692}
+--- !u!1001 &7689153911858606098
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8510775167707353074}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_Name
+      value: Distal_phalanx_of_right_thumb_Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102641116241020577, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65253c53c1ad2fc46884e0c74ec20ac3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+--- !u!4 &7872263299568392185 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6f64d1ad641b82647804f9998c584866, type: 3}
+  m_PrefabInstance: {fileID: 7689153911858606098}
+  m_PrefabAsset: {fileID: 0}

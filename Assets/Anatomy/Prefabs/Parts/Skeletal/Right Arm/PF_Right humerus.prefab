@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3246247647272859985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2489721042633884869}
+  - component: {fileID: 3038884633367597724}
+  m_Layer: 0
+  m_Name: PF_Right humerus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2489721042633884869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3246247647272859985}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5554660839274483493}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3038884633367597724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3246247647272859985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c6c22da58b83d44b4cbf9ef57a0c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: Right humerus
+  fmaId: FMA23130
+  bodySystem: Skeletal
+  region: 20260511095759
+  layerName: Skeletal
+  sourceFileId: FJ757
+  representationId: BP62907
+  sourceAssetPath: Assets/External Assets/Medicine/20260511095759/FJ757_BP62907_FMA23130_Right
+    humerus.obj
+  sourceBoundsMin: {x: -241.579, y: -96.6881, z: 1039.45}
+  sourceBoundsMax: {x: -140.668, y: -47.2527, z: 1346.91}
+--- !u!1001 &5376356665786886350
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2489721042633884869}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_Name
+      value: Right_humerus_Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102641116241020577, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65253c53c1ad2fc46884e0c74ec20ac3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+--- !u!4 &5554660839274483493 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c486c809d572c9a44a4138be4721b02b, type: 3}
+  m_PrefabInstance: {fileID: 5376356665786886350}
+  m_PrefabAsset: {fileID: 0}

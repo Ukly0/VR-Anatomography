@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6290041247704368758
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3391341322066987452}
+  - component: {fileID: 6852743630794715493}
+  m_Layer: 0
+  m_Name: PF_Ninth thoracic vertebra
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3391341322066987452
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290041247704368758}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8394056856997856383}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6852743630794715493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290041247704368758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c6c22da58b83d44b4cbf9ef57a0c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: Ninth thoracic vertebra
+  fmaId: FMA10014
+  bodySystem: Skeletal
+  region: Set of all vertebrae
+  layerName: Skeletal
+  sourceFileId: FJ392
+  representationId: BP62521
+  sourceAssetPath: Assets/External Assets/Medicine/BP63257_FMA3_2_1_inference_partof_FMA276660_Set_of_all_vertebrae/FJ392_BP62521_FMA10014_Ninth
+    thoracic vertebra.obj
+  sourceBoundsMin: {x: -35.5965, y: -77.7508, z: 1149.01}
+  sourceBoundsMax: {x: 33.0792, y: -4.4016, z: 1203.84}
+--- !u!1001 &8356173204224959380
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3391341322066987452}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_Name
+      value: Ninth_thoracic_vertebra_Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102641116241020577, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65253c53c1ad2fc46884e0c74ec20ac3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+--- !u!4 &8394056856997856383 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d29fc130b01d4c041b8bbfaf351802fb, type: 3}
+  m_PrefabInstance: {fileID: 8356173204224959380}
+  m_PrefabAsset: {fileID: 0}

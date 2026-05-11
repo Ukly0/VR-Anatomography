@@ -11,9 +11,9 @@ namespace DemoMedicine.Anatomy.Editor
     public static class AnatomyPrefabBuilder
     {
         private const string SourceSkullFolder = "Assets/External Assets/Medicine/BP63256_FMA3_2_1_inference_partof_FMA46565_Skull";
+        private const string SourceRibCageFolder = "Assets/External Assets/Medicine/BP13928_FMA3_0_partof_FMA7480_Rib_cage";
         private const string OutputRoot = "Assets/Anatomy";
         private const string PrefabRoot = OutputRoot + "/Prefabs";
-        private const string PartPrefabFolder = PrefabRoot + "/Parts/Skeletal/Skull";
         private const string LayerPrefabFolder = PrefabRoot + "/Layers";
         private const string MaterialFolder = OutputRoot + "/Materials";
         private const string BoneMaterialPath = MaterialFolder + "/MAT_Bone.mat";
@@ -27,30 +27,77 @@ namespace DemoMedicine.Anatomy.Editor
             @"Bounds\(mm\): \(([^,]+),([^,]+),([^)]+)\)-\(([^,]+),([^,]+),([^)]+)\)",
             RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
+        private static readonly Regex FolderNamePattern = new Regex(
+            @"^BP\d+_.+_partof_FMA\d+_(.+)$",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
         [MenuItem("Tools/Anatomy/Build Skull Prefabs")]
         public static void BuildSkullPrefabs()
         {
-            if (!AssetDatabase.IsValidFolder(SourceSkullFolder))
+            BuildAnatomyPrefabs(new AnatomyBuildConfig(SourceSkullFolder, "Skeletal", "Skull", "Skeletal"));
+        }
+
+        [MenuItem("Tools/Anatomy/Build Rib Cage Prefabs")]
+        public static void BuildRibCagePrefabs()
+        {
+            BuildAnatomyPrefabs(new AnatomyBuildConfig(SourceRibCageFolder, "Skeletal", "Rib cage", "Skeletal"));
+        }
+
+        [MenuItem("Tools/Anatomy/Build Selected BodyParts3D Folder")]
+        public static void BuildSelectedBodyPartsFolder()
+        {
+            var selectedPath = AssetDatabase.GetAssetPath(Selection.activeObject);
+            if (string.IsNullOrWhiteSpace(selectedPath) || !AssetDatabase.IsValidFolder(selectedPath))
             {
-                Debug.LogError($"Source folder not found: {SourceSkullFolder}");
+                Debug.LogError("Select a BodyParts3D source folder in the Project window before running this tool.");
                 return;
             }
 
-            EnsureFolders();
+            if (!selectedPath.StartsWith("Assets/External Assets/Medicine/", StringComparison.Ordinal)
+                && !string.Equals(selectedPath, "Assets/External Assets/Medicine", StringComparison.Ordinal))
+            {
+                Debug.LogError(
+                    "Selected folder is not a BodyParts3D source folder. Select a folder under Assets/External Assets/Medicine, " +
+                    "for example Assets/External Assets/Medicine/BP13928_FMA3_0_partof_FMA7480_Rib_cage.");
+                return;
+            }
+
+            var region = RegionNameFromSourceFolder(selectedPath);
+            BuildAnatomyPrefabs(new AnatomyBuildConfig(selectedPath, "Skeletal", region, "Skeletal"));
+        }
+
+        private static void BuildAnatomyPrefabs(AnatomyBuildConfig config)
+        {
+            if (!AssetDatabase.IsValidFolder(config.SourceFolder))
+            {
+                Debug.LogError($"Source folder not found: {config.SourceFolder}");
+                return;
+            }
+
+            var partPrefabFolder = $"{PrefabRoot}/Parts/{config.BodySystem}/{config.Region}";
+            EnsureFolders(partPrefabFolder);
 
             var boneMaterial = GetOrCreateBoneMaterial();
-            var sourceFiles = Directory.GetFiles(Path.GetFullPath(SourceSkullFolder), "*.obj", SearchOption.TopDirectoryOnly);
+            var sourceFiles = Directory.GetFiles(Path.GetFullPath(config.SourceFolder), "*.obj", SearchOption.TopDirectoryOnly);
             Array.Sort(sourceFiles, StringComparer.OrdinalIgnoreCase);
+            if (sourceFiles.Length == 0)
+            {
+                Debug.LogError(
+                    $"No .obj files found in source folder: {config.SourceFolder}. " +
+                    "Select the specific BodyParts3D folder that contains the .obj files, not an output prefab folder.");
+                return;
+            }
 
-            var anatomyRoot = new GameObject("AnatomyRoot");
+            var safeRegionName = ToSafeObjectName(config.Region);
+            var anatomyRoot = new GameObject($"PF_AnatomyRoot_{safeRegionName}");
             anatomyRoot.transform.localScale = Vector3.one * MillimetersToMeters;
 
-            var skeletalLayer = new GameObject("SkeletalLayer");
-            skeletalLayer.transform.SetParent(anatomyRoot.transform, false);
-            skeletalLayer.AddComponent<AnatomyLayer>().Configure("Skeletal", true);
+            var layer = new GameObject($"{config.LayerName}Layer");
+            layer.transform.SetParent(anatomyRoot.transform, false);
+            layer.AddComponent<AnatomyLayer>().Configure(config.LayerName, true);
 
-            var skullGroup = new GameObject("Skull");
-            skullGroup.transform.SetParent(skeletalLayer.transform, false);
+            var regionGroup = new GameObject(config.Region);
+            regionGroup.transform.SetParent(layer.transform, false);
 
             var createdCount = 0;
 
@@ -68,20 +115,20 @@ namespace DemoMedicine.Anatomy.Editor
                     }
 
                     var metadata = ReadMetadata(sourceFile, assetPath);
-                    var prefabPath = $"{PartPrefabFolder}/{ToSafeAssetName(metadata.DisplayName)}.prefab";
-                    var partRoot = CreatePartInstance(modelAsset, metadata, boneMaterial);
+                    var prefabPath = $"{partPrefabFolder}/{ToSafeAssetName(metadata.DisplayName)}.prefab";
+                    var partRoot = CreatePartInstance(modelAsset, metadata, boneMaterial, config);
 
                     PrefabUtility.SaveAsPrefabAsset(partRoot, prefabPath);
                     UnityEngine.Object.DestroyImmediate(partRoot);
 
                     var savedPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
                     var partInstance = (GameObject)PrefabUtility.InstantiatePrefab(savedPrefab);
-                    partInstance.transform.SetParent(skullGroup.transform, false);
+                    partInstance.transform.SetParent(regionGroup.transform, false);
 
                     createdCount++;
                 }
 
-                PrefabUtility.SaveAsPrefabAsset(anatomyRoot, $"{LayerPrefabFolder}/PF_AnatomyRoot_Skull.prefab");
+                PrefabUtility.SaveAsPrefabAsset(anatomyRoot, $"{LayerPrefabFolder}/PF_AnatomyRoot_{safeRegionName}.prefab");
             }
             finally
             {
@@ -91,18 +138,18 @@ namespace DemoMedicine.Anatomy.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log($"Built {createdCount} skull part prefabs and PF_AnatomyRoot_Skull.prefab.");
+            Debug.Log($"Built {createdCount} {config.Region} part prefabs and PF_AnatomyRoot_{safeRegionName}.prefab.");
         }
 
-        private static GameObject CreatePartInstance(GameObject modelAsset, PartMetadata metadata, Material material)
+        private static GameObject CreatePartInstance(GameObject modelAsset, PartMetadata metadata, Material material, AnatomyBuildConfig config)
         {
             var partRoot = new GameObject($"PF_{ToSafeObjectName(metadata.DisplayName)}");
             partRoot.AddComponent<AnatomyPart>().Configure(
                 metadata.DisplayName,
                 metadata.FmaId,
-                "Skeletal",
-                "Skull",
-                "Skeletal",
+                config.BodySystem,
+                config.Region,
+                config.LayerName,
                 metadata.SourceFileId,
                 metadata.RepresentationId,
                 metadata.SourceAssetPath,
@@ -199,23 +246,31 @@ namespace DemoMedicine.Anatomy.Editor
             return float.Parse(value, CultureInfo.InvariantCulture);
         }
 
-        private static void EnsureFolders()
+        private static void EnsureFolders(string partPrefabFolder)
         {
-            EnsureFolder("Assets", "Anatomy");
-            EnsureFolder(OutputRoot, "Materials");
-            EnsureFolder(OutputRoot, "Prefabs");
-            EnsureFolder(PrefabRoot, "Parts");
-            EnsureFolder(PrefabRoot + "/Parts", "Skeletal");
-            EnsureFolder(PrefabRoot + "/Parts/Skeletal", "Skull");
-            EnsureFolder(PrefabRoot, "Layers");
+            EnsureFolderPath(OutputRoot);
+            EnsureFolderPath(MaterialFolder);
+            EnsureFolderPath(PrefabRoot);
+            EnsureFolderPath(PrefabRoot + "/Parts");
+            EnsureFolderPath(partPrefabFolder);
+            EnsureFolderPath(LayerPrefabFolder);
         }
 
-        private static void EnsureFolder(string parent, string child)
+        private static void EnsureFolderPath(string folderPath)
         {
-            var path = $"{parent}/{child}";
-            if (!AssetDatabase.IsValidFolder(path))
+            var normalizedPath = folderPath.Replace('\\', '/');
+            var parts = normalizedPath.Split('/');
+            var current = parts[0];
+
+            for (var i = 1; i < parts.Length; i++)
             {
-                AssetDatabase.CreateFolder(parent, child);
+                var next = $"{current}/{parts[i]}";
+                if (!AssetDatabase.IsValidFolder(next))
+                {
+                    AssetDatabase.CreateFolder(current, parts[i]);
+                }
+
+                current = next;
             }
         }
 
@@ -237,6 +292,31 @@ namespace DemoMedicine.Anatomy.Editor
         private static string ToSafeObjectName(string value)
         {
             return value.Replace(' ', '_');
+        }
+
+        private static string RegionNameFromSourceFolder(string sourceFolder)
+        {
+            var folderName = Path.GetFileName(sourceFolder.TrimEnd('/', '\\'));
+            var match = FolderNamePattern.Match(folderName);
+            var region = match.Success ? match.Groups[1].Value : folderName;
+
+            return region.Replace('_', ' ');
+        }
+
+        private readonly struct AnatomyBuildConfig
+        {
+            public AnatomyBuildConfig(string sourceFolder, string bodySystem, string region, string layerName)
+            {
+                SourceFolder = sourceFolder;
+                BodySystem = bodySystem;
+                Region = region;
+                LayerName = layerName;
+            }
+
+            public string SourceFolder { get; }
+            public string BodySystem { get; }
+            public string Region { get; }
+            public string LayerName { get; }
         }
 
         private struct PartMetadata

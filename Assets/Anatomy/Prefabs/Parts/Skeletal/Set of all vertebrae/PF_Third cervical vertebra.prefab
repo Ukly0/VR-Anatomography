@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4990283765048771234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9019299213928452272}
+  - component: {fileID: 343215941207977916}
+  m_Layer: 0
+  m_Name: PF_Third cervical vertebra
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9019299213928452272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4990283765048771234}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1217908017558749513}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &343215941207977916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4990283765048771234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c6c22da58b83d44b4cbf9ef57a0c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: Third cervical vertebra
+  fmaId: FMA12521
+  bodySystem: Skeletal
+  region: Set of all vertebrae
+  layerName: Skeletal
+  sourceFileId: FJ705
+  representationId: BP62990
+  sourceAssetPath: Assets/External Assets/Medicine/BP63257_FMA3_2_1_inference_partof_FMA276660_Set_of_all_vertebrae/FJ705_BP62990_FMA12521_Third
+    cervical vertebra.obj
+  sourceBoundsMin: {x: -27.9686, y: -98.0633, z: 1432.53}
+  sourceBoundsMax: {x: 27.0217, y: -45.6135, z: 1458.33}
+--- !u!1001 &1687822499205473954
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9019299213928452272}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_Name
+      value: Third_cervical_vertebra_Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102641116241020577, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65253c53c1ad2fc46884e0c74ec20ac3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+--- !u!4 &1217908017558749513 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 39284b8693db5604dbcba2d733780550, type: 3}
+  m_PrefabInstance: {fileID: 1687822499205473954}
+  m_PrefabAsset: {fileID: 0}

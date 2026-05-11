@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5982186800827439111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1708801229673539150}
+  - component: {fileID: 6519164782370003772}
+  m_Layer: 0
+  m_Name: PF_Distal phalanx of right ring finger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1708801229673539150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5982186800827439111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2651776256454578619}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6519164782370003772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5982186800827439111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c6c22da58b83d44b4cbf9ef57a0c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: Distal phalanx of right ring finger
+  fmaId: FMA24462
+  bodySystem: Skeletal
+  region: Right Hand
+  layerName: Skeletal
+  sourceFileId: FJ487
+  representationId: BP62671
+  sourceAssetPath: Assets/External Assets/Medicine/BP13928_FMA3_0_partof_FMA7480_Right_Hand/FJ487_BP62671_FMA24462_Distal
+    phalanx of right ring finger.obj
+  sourceBoundsMin: {x: -254.269, y: -190.68, z: 675.005}
+  sourceBoundsMax: {x: -245.936, y: -175.017, z: 684.305}
+--- !u!1001 &2542203966796019280
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1708801229673539150}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_Name
+      value: Distal_phalanx_of_right_ring_finger_Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102641116241020577, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65253c53c1ad2fc46884e0c74ec20ac3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+--- !u!4 &2651776256454578619 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 613c13e32db35344eb3de28a0c498756, type: 3}
+  m_PrefabInstance: {fileID: 2542203966796019280}
+  m_PrefabAsset: {fileID: 0}

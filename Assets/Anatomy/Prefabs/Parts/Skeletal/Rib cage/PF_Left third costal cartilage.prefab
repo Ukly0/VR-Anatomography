@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8951581678506737111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7156808995293479098}
+  - component: {fileID: 5628397999321906553}
+  m_Layer: 0
+  m_Name: PF_Left third costal cartilage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7156808995293479098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8951581678506737111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2568808681718707037}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5628397999321906553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8951581678506737111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c6c22da58b83d44b4cbf9ef57a0c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: Left third costal cartilage
+  fmaId: FMA8058
+  bodySystem: Skeletal
+  region: Rib cage
+  layerName: Skeletal
+  sourceFileId: FJ3245
+  representationId: BP12046
+  sourceAssetPath: Assets/External Assets/Medicine/BP13928_FMA3_0_partof_FMA7480_Rib_cage/FJ3245_BP12046_FMA8058_Left
+    third costal cartilage.obj
+  sourceBoundsMin: {x: 13.0945, y: -190.074, z: 1242.4}
+  sourceBoundsMax: {x: 50.7226, y: -171.438, z: 1259.99}
+--- !u!1001 &2606604105853244598
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7156808995293479098}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_Name
+      value: Left_third_costal_cartilage_Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102641116241020577, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65253c53c1ad2fc46884e0c74ec20ac3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+--- !u!4 &2568808681718707037 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2abfdb29235f057438c9e7312cbd4e6d, type: 3}
+  m_PrefabInstance: {fileID: 2606604105853244598}
+  m_PrefabAsset: {fileID: 0}

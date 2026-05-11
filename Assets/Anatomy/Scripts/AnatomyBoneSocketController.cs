@@ -54,6 +54,8 @@ namespace DemoMedicine.Anatomy
         private bool interactorMasksExpanded;
         private Material socketGhostMaterial;
 
+        public event Action<bool> ImmediateSeparationStateChanged;
+
         private void Awake()
         {
             EnsureConfigured();
@@ -137,6 +139,7 @@ namespace DemoMedicine.Anatomy
             CancelWholeSelection();
             SetWholeInteractionActive(false);
             SetPartInteractionActive(false);
+            ImmediateSeparationStateChanged?.Invoke(true);
             exploder.Separate();
         }
 
@@ -154,6 +157,7 @@ namespace DemoMedicine.Anatomy
             SetWholeInteractionActive(false);
             SetPartInteractionActive(false);
             PreparePartsForReassembly();
+            ImmediateSeparationStateChanged?.Invoke(false);
             reassemblyRoutine = StartCoroutine(AnimateReassemblyToOriginalPose());
         }
 
@@ -508,6 +512,7 @@ namespace DemoMedicine.Anatomy
             socketInteractor.selectExited.RemoveListener(OnSocketSelectExited);
             socketInteractor.selectEntered.AddListener(OnSocketSelectEntered);
             socketInteractor.selectExited.AddListener(OnSocketSelectExited);
+            var socketMatchFilter = ConfigureSocketMatchFilter(socketGameObject, socketInteractor, partGrab);
 
             var socketGhostRoot = EnsureSocketGhost(partTransform, socketTransform);
             if (socketGhostRoot != null)
@@ -528,11 +533,36 @@ namespace DemoMedicine.Anatomy
                 socketTransform = socketTransform,
                 socketCollider = socketCollider,
                 socketInteractor = socketInteractor,
+                socketMatchFilter = socketMatchFilter,
                 socketAttach = socketAttach,
                 socketGhostRoot = socketGhostRoot,
                 localBoundsCenter = localBounds.center,
                 localBoundsSize = localBounds.size,
             };
+        }
+
+        private static AnatomySocketMatchFilter ConfigureSocketMatchFilter(
+            GameObject socketGameObject,
+            XRSocketInteractor socketInteractor,
+            XRGrabInteractable matchingInteractable)
+        {
+            var socketMatchFilter = socketGameObject.GetComponent<AnatomySocketMatchFilter>();
+
+            if (socketMatchFilter == null)
+            {
+                socketMatchFilter = socketGameObject.AddComponent<AnatomySocketMatchFilter>();
+            }
+
+            socketMatchFilter.Configure(socketInteractor, matchingInteractable);
+
+            if (socketInteractor != null)
+            {
+                socketInteractor.targetFilter = socketMatchFilter;
+                socketInteractor.selectFilters.Remove(socketMatchFilter);
+                socketInteractor.selectFilters.Add(socketMatchFilter);
+            }
+
+            return socketMatchFilter;
         }
 
         private void ApplyCurrentState()
@@ -1262,6 +1292,7 @@ namespace DemoMedicine.Anatomy
             public Transform socketTransform;
             public Collider socketCollider;
             public XRSocketInteractor socketInteractor;
+            public AnatomySocketMatchFilter socketMatchFilter;
             public Transform socketAttach;
             public Transform socketGhostRoot;
             public bool hasBeenGrabbed;

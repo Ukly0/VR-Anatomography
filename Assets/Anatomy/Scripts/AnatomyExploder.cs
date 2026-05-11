@@ -9,7 +9,12 @@ namespace DemoMedicine.Anatomy
     {
         [SerializeField] private Transform partsRoot;
         [SerializeField] private Transform customCenter;
+        [Tooltip("How the center point is calculated when parts separate from the group center.")]
         [SerializeField] private CenterMode centerMode = CenterMode.BoundsCenter;
+        [Tooltip("FromCenter works well for compact groups. LocalDirection spreads parts along one local direction, useful for long one-axis groups like vertebrae.")]
+        [SerializeField] private SeparationMode separationMode = SeparationMode.FromCenter;
+        [Tooltip("Local direction used by LocalDirection separation mode. This is relative to the exploder root.")]
+        [SerializeField] private Vector3 localSeparationDirection = Vector3.right;
         [SerializeField] private bool includeInactiveParts = true;
         [SerializeField] private float separationDistance = 0.25f;
         [SerializeField] private float animationDuration = 0.75f;
@@ -33,6 +38,11 @@ namespace DemoMedicine.Anatomy
 
         private void OnValidate()
         {
+            if (localSeparationDirection.sqrMagnitude < 0.000001f)
+            {
+                localSeparationDirection = Vector3.right;
+            }
+
             separationDistance = Mathf.Max(0f, separationDistance);
             animationDuration = Mathf.Max(0.01f, animationDuration);
         }
@@ -104,22 +114,16 @@ namespace DemoMedicine.Anatomy
             var anatomyParts = root.GetComponentsInChildren<AnatomyPart>(includeInactiveParts);
             var center = GetExplosionCenter(root, anatomyParts);
 
+            if (separationMode == SeparationMode.LocalDirection)
+            {
+                RebuildLocalDirectionParts(root, anatomyParts);
+                return;
+            }
+
             foreach (var anatomyPart in anatomyParts)
             {
                 var partTransform = anatomyPart.transform;
-                var direction = GetPartCenter(partTransform) - center;
-
-                if (direction.sqrMagnitude < 0.000001f)
-                {
-                    direction = partTransform.position - root.position;
-                }
-
-                if (direction.sqrMagnitude < 0.000001f)
-                {
-                    direction = root.up;
-                }
-
-                direction.Normalize();
+                var direction = GetCenterSeparationDirection(root, partTransform, center);
 
                 var localSpace = partTransform.parent != null ? partTransform.parent : root;
 
@@ -127,6 +131,35 @@ namespace DemoMedicine.Anatomy
                     partTransform,
                     partTransform.localPosition,
                     partTransform.localPosition + localSpace.InverseTransformVector(direction * separationDistance),
+                    partTransform.GetComponentsInChildren<Collider>(true)));
+            }
+        }
+
+        private void RebuildLocalDirectionParts(Transform root, AnatomyPart[] anatomyParts)
+        {
+            var sortedParts = new List<AnatomyPart>(anatomyParts);
+            var sortAxis = GetDominantLocalBoundsAxis(root, anatomyParts);
+
+            sortedParts.Sort((left, right) =>
+            {
+                var leftPosition = Vector3.Dot(root.InverseTransformPoint(GetPartCenter(left.transform)), sortAxis);
+                var rightPosition = Vector3.Dot(root.InverseTransformPoint(GetPartCenter(right.transform)), sortAxis);
+                return leftPosition.CompareTo(rightPosition);
+            });
+
+            var separationDirection = root.TransformDirection(localSeparationDirection.normalized);
+            var centerIndex = (sortedParts.Count - 1) * 0.5f;
+
+            for (var i = 0; i < sortedParts.Count; i++)
+            {
+                var partTransform = sortedParts[i].transform;
+                var localSpace = partTransform.parent != null ? partTransform.parent : root;
+                var offset = separationDirection * separationDistance * (i - centerIndex);
+
+                parts.Add(new PartState(
+                    partTransform,
+                    partTransform.localPosition,
+                    partTransform.localPosition + localSpace.InverseTransformVector(offset),
                     partTransform.GetComponentsInChildren<Collider>(true)));
             }
         }
@@ -187,6 +220,61 @@ namespace DemoMedicine.Anatomy
             }
 
             return GetBoundsCenter(anatomyParts, root.position);
+        }
+
+        private static Vector3 GetCenterSeparationDirection(Transform root, Transform partTransform, Vector3 center)
+        {
+            var direction = GetPartCenter(partTransform) - center;
+
+            if (direction.sqrMagnitude < 0.000001f)
+            {
+                direction = partTransform.position - root.position;
+            }
+
+            if (direction.sqrMagnitude < 0.000001f)
+            {
+                direction = root.up;
+            }
+
+            return direction.normalized;
+        }
+
+        private static Vector3 GetDominantLocalBoundsAxis(Transform root, AnatomyPart[] anatomyParts)
+        {
+            var initialized = false;
+            var bounds = new Bounds(Vector3.zero, Vector3.zero);
+
+            foreach (var anatomyPart in anatomyParts)
+            {
+                var localCenter = root.InverseTransformPoint(GetPartCenter(anatomyPart.transform));
+
+                if (!initialized)
+                {
+                    bounds = new Bounds(localCenter, Vector3.zero);
+                    initialized = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(localCenter);
+                }
+            }
+
+            if (!initialized)
+            {
+                return Vector3.up;
+            }
+
+            if (bounds.size.x >= bounds.size.y && bounds.size.x >= bounds.size.z)
+            {
+                return Vector3.right;
+            }
+
+            if (bounds.size.y >= bounds.size.x && bounds.size.y >= bounds.size.z)
+            {
+                return Vector3.up;
+            }
+
+            return Vector3.forward;
         }
 
         private static Vector3 GetBoundsCenter(AnatomyPart[] anatomyParts, Vector3 fallback)
@@ -250,6 +338,12 @@ namespace DemoMedicine.Anatomy
             BoundsCenter,
             TransformPosition,
             CustomTransform
+        }
+
+        private enum SeparationMode
+        {
+            FromCenter,
+            LocalDirection
         }
 
         private readonly struct PartState

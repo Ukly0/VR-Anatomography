@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4605259191046137672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5552558542005069176}
+  - component: {fileID: 3750601802756203417}
+  m_Layer: 0
+  m_Name: PF_Second thoracic vertebra
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5552558542005069176
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605259191046137672}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6908147901175662546}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3750601802756203417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605259191046137672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c6c22da58b83d44b4cbf9ef57a0c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: Second thoracic vertebra
+  fmaId: FMA9187
+  bodySystem: Skeletal
+  region: Set of all vertebrae
+  layerName: Skeletal
+  sourceFileId: FJ325
+  representationId: BP62522
+  sourceAssetPath: Assets/External Assets/Medicine/BP63257_FMA3_2_1_inference_partof_FMA276660_Set_of_all_vertebrae/FJ325_BP62522_FMA9187_Second
+    thoracic vertebra.obj
+  sourceBoundsMin: {x: -36.9612, y: -82.0931, z: 1345.02}
+  sourceBoundsMax: {x: 33.0384, y: -11.4593, z: 1379.38}
+--- !u!1001 &6364732614067281977
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5552558542005069176}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_Name
+      value: Second_thoracic_vertebra_Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102641116241020577, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65253c53c1ad2fc46884e0c74ec20ac3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+--- !u!4 &6908147901175662546 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 895e202f3d3ed5244a637e0e490808f0, type: 3}
+  m_PrefabInstance: {fileID: 6364732614067281977}
+  m_PrefabAsset: {fileID: 0}

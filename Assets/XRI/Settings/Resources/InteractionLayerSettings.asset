@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LayerNames:
   - Default
-  - 
-  - 
-  - 
-  - 
+  - Parent
+  - Rib Cage
+  - Skull
+  - Vertebrae
   - 
   - 
   - 
