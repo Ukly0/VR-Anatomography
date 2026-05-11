@@ -8,13 +8,128 @@ namespace DemoMedicine.Anatomy
 {
     public sealed class AnatomySocketMatchFilter : XRBaseTargetFilter, IXRSelectFilter
     {
+        private enum HostRole
+        {
+            Socket,
+            Interactable
+        }
+
         [SerializeField] private XRSocketInteractor socketInteractor;
         [SerializeField] private XRGrabInteractable matchingInteractable;
+        [SerializeField] private HostRole hostRole = HostRole.Socket;
 
         public void Configure(XRSocketInteractor socket, XRGrabInteractable interactable)
         {
+            Configure(socket, interactable, HostRole.Socket);
+        }
+
+        public void Configure(XRSocketInteractor socket, XRGrabInteractable interactable, bool isInteractableHost)
+        {
+            Configure(socket, interactable, isInteractableHost ? HostRole.Interactable : HostRole.Socket);
+        }
+
+        private void Configure(XRSocketInteractor socket, XRGrabInteractable interactable, HostRole role)
+        {
             socketInteractor = socket;
             matchingInteractable = interactable;
+            hostRole = role;
+            RegisterFilter();
+        }
+
+        private void OnEnable()
+        {
+            RegisterFilter();
+        }
+
+        private void OnDisable()
+        {
+            UnregisterRuntimeFilter();
+        }
+
+        private void OnValidate()
+        {
+            RegisterPersistentFilter();
+        }
+
+        private void RegisterFilter()
+        {
+            if (Application.isPlaying)
+            {
+                RegisterRuntimeFilter();
+            }
+            else
+            {
+                RegisterPersistentFilter();
+            }
+        }
+
+        private void RegisterRuntimeFilter()
+        {
+            if (hostRole == HostRole.Socket)
+            {
+                if (socketInteractor == null)
+                {
+                    return;
+                }
+
+                socketInteractor.targetFilter = this;
+                socketInteractor.selectFilters.Remove(this);
+                socketInteractor.selectFilters.Add(this);
+                return;
+            }
+
+            if (matchingInteractable == null)
+            {
+                return;
+            }
+
+            matchingInteractable.selectFilters.Remove(this);
+            matchingInteractable.selectFilters.Add(this);
+        }
+
+        private void UnregisterRuntimeFilter()
+        {
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+
+            if (hostRole == HostRole.Socket)
+            {
+                if (socketInteractor != null && ReferenceEquals(socketInteractor.targetFilter, this))
+                {
+                    socketInteractor.targetFilter = null;
+                }
+
+                socketInteractor?.selectFilters.Remove(this);
+                return;
+            }
+
+            matchingInteractable?.selectFilters.Remove(this);
+        }
+
+        private void RegisterPersistentFilter()
+        {
+            if (hostRole == HostRole.Socket)
+            {
+                if (socketInteractor == null)
+                {
+                    return;
+                }
+
+                socketInteractor.startingTargetFilter = this;
+                socketInteractor.startingSelectFilters.Remove(this);
+                socketInteractor.startingSelectFilters.Add(this);
+                return;
+            }
+
+            if (matchingInteractable == null)
+            {
+                return;
+            }
+
+            matchingInteractable.startingSelectFilters.Remove(this);
+            matchingInteractable.startingSelectFilters.Add(this);
         }
 
         public override void Process(
@@ -24,7 +139,7 @@ namespace DemoMedicine.Anatomy
         {
             results.Clear();
 
-            if (socketInteractor != null && !ReferenceEquals(interactor, socketInteractor))
+            if (hostRole != HostRole.Socket)
             {
                 results.AddRange(targets);
                 return;
@@ -32,7 +147,7 @@ namespace DemoMedicine.Anatomy
 
             foreach (var target in targets)
             {
-                if (ReferenceEquals(target, matchingInteractable))
+                if (ReferenceEquals(interactor, socketInteractor) && ReferenceEquals(target, matchingInteractable))
                 {
                     results.Add(target);
                     return;
@@ -42,12 +157,19 @@ namespace DemoMedicine.Anatomy
 
         public bool Process(IXRSelectInteractor interactor, IXRSelectInteractable interactable)
         {
-            if (socketInteractor != null && !ReferenceEquals(interactor, socketInteractor))
+            if (hostRole == HostRole.Socket)
+            {
+                return ReferenceEquals(interactor, socketInteractor) &&
+                    ReferenceEquals(interactable, matchingInteractable);
+            }
+
+            if (interactor is not XRSocketInteractor)
             {
                 return true;
             }
 
-            return matchingInteractable != null && ReferenceEquals(interactable, matchingInteractable);
+            return ReferenceEquals(interactor, socketInteractor) &&
+                ReferenceEquals(interactable, matchingInteractable);
         }
     }
 }

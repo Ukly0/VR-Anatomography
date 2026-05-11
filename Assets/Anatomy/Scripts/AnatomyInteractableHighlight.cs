@@ -13,6 +13,8 @@ namespace DemoMedicine.Anatomy
         [SerializeField] private bool ignoreSocketSelection = true;
 
         private readonly List<RendererState> rendererStates = new List<RendererState>();
+        private readonly HashSet<IXRHoverInteractor> hoverInteractors = new HashSet<IXRHoverInteractor>();
+        private readonly HashSet<IXRSelectInteractor> selectInteractors = new HashSet<IXRSelectInteractor>();
         private UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable;
         private bool isHovered;
         private bool isSelected;
@@ -37,8 +39,8 @@ namespace DemoMedicine.Anatomy
                 return;
             }
 
-            interactable.firstHoverEntered.AddListener(OnFirstHoverEntered);
-            interactable.lastHoverExited.AddListener(OnLastHoverExited);
+            interactable.hoverEntered.AddListener(OnHoverEntered);
+            interactable.hoverExited.AddListener(OnHoverExited);
             interactable.selectEntered.AddListener(OnSelectEntered);
             interactable.selectExited.AddListener(OnSelectExited);
         }
@@ -50,44 +52,75 @@ namespace DemoMedicine.Anatomy
                 return;
             }
 
-            interactable.firstHoverEntered.RemoveListener(OnFirstHoverEntered);
-            interactable.lastHoverExited.RemoveListener(OnLastHoverExited);
+            interactable.hoverEntered.RemoveListener(OnHoverEntered);
+            interactable.hoverExited.RemoveListener(OnHoverExited);
             interactable.selectEntered.RemoveListener(OnSelectEntered);
             interactable.selectExited.RemoveListener(OnSelectExited);
+
+            hoverInteractors.Clear();
+            selectInteractors.Clear();
+            RefreshInteractionState();
         }
 
-        private void OnFirstHoverEntered(HoverEnterEventArgs args)
+        private void OnHoverEntered(HoverEnterEventArgs args)
         {
-            isHovered = true;
-            RefreshVisuals();
+            if (ShouldIgnoreSocketInteractor(args.interactorObject))
+            {
+                return;
+            }
+
+            hoverInteractors.Add(args.interactorObject);
+            RefreshInteractionState();
         }
 
-        private void OnLastHoverExited(HoverExitEventArgs args)
+        private void OnHoverExited(HoverExitEventArgs args)
         {
-            isHovered = false;
-            RefreshVisuals();
+            if (ShouldIgnoreSocketInteractor(args.interactorObject))
+            {
+                return;
+            }
+
+            hoverInteractors.Remove(args.interactorObject);
+            RefreshInteractionState();
         }
 
         private void OnSelectEntered(SelectEnterEventArgs args)
         {
-            if (ignoreSocketSelection && args.interactorObject is XRSocketInteractor)
+            if (ShouldIgnoreSocketInteractor(args.interactorObject))
             {
                 return;
             }
 
-            isSelected = true;
-            RefreshVisuals();
+            selectInteractors.Add(args.interactorObject);
+            RefreshInteractionState();
         }
 
         private void OnSelectExited(SelectExitEventArgs args)
         {
-            if (ignoreSocketSelection && args.interactorObject is XRSocketInteractor)
+            if (ShouldIgnoreSocketInteractor(args.interactorObject))
             {
                 return;
             }
 
-            isSelected = false;
+            selectInteractors.Remove(args.interactorObject);
+            RefreshInteractionState();
+        }
+
+        private void RefreshInteractionState()
+        {
+            isHovered = hoverInteractors.Count > 0;
+            isSelected = selectInteractors.Count > 0;
             RefreshVisuals();
+        }
+
+        private bool ShouldIgnoreSocketInteractor(IXRHoverInteractor interactorObject)
+        {
+            return ignoreSocketSelection && interactorObject is XRSocketInteractor;
+        }
+
+        private bool ShouldIgnoreSocketInteractor(IXRSelectInteractor interactorObject)
+        {
+            return ignoreSocketSelection && interactorObject is XRSocketInteractor;
         }
 
         private void RefreshVisuals()

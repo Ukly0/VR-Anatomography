@@ -15,14 +15,25 @@ namespace DemoMedicine.AnatomyEditor
         private static readonly FieldInfo SeparationChangedField =
             typeof(AnatomyExploder).GetField("separationChanged", BindingFlags.NonPublic | BindingFlags.Instance);
 
+        [MenuItem("Tools/Anatomy/Setup Selected Anatomy Sockets")]
+        private static void SetupSelectedAnatomy()
+        {
+            SetupSelected("Anatomy socket setup");
+        }
+
         [MenuItem("Tools/Anatomy/Setup Selected Skull Bone Sockets")]
         private static void SetupSelectedSkull()
+        {
+            SetupSelected("Skull bone socket setup");
+        }
+
+        private static void SetupSelected(string setupLabel)
         {
             var selectedGameObject = Selection.activeGameObject;
 
             if (selectedGameObject == null)
             {
-                Debug.LogWarning("Select the Skull object before running the setup tool.");
+                Debug.LogWarning("Select an anatomy object with an AnatomyExploder before running the setup tool.");
                 return;
             }
 
@@ -45,7 +56,7 @@ namespace DemoMedicine.AnatomyEditor
                 }
             }
 
-            Undo.RegisterFullObjectHierarchyUndo(skullRoot, "Setup Skull Bone Sockets");
+            Undo.RegisterFullObjectHierarchyUndo(skullRoot, setupLabel);
 
             var controller = skullRoot.GetComponent<AnatomyBoneSocketController>();
 
@@ -62,7 +73,14 @@ namespace DemoMedicine.AnatomyEditor
 
             EditorSceneManager.MarkSceneDirty(skullRoot.scene);
             Selection.activeGameObject = skullRoot;
-            Debug.Log($"Skull bone socket setup completed on '{skullRoot.name}'.", skullRoot);
+            Debug.Log($"{setupLabel} completed on '{skullRoot.name}'.", skullRoot);
+        }
+
+        [MenuItem("Tools/Anatomy/Setup Selected Anatomy Sockets", true)]
+        private static bool ValidateSetupSelectedAnatomy()
+        {
+            return Selection.activeGameObject != null &&
+                ResolveExploder(Selection.activeGameObject) != null;
         }
 
         [MenuItem("Tools/Anatomy/Setup Selected Skull Bone Sockets", true)]

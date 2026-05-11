@@ -24,13 +24,16 @@ namespace DemoMedicine.Anatomy
         [Header("Part Setup")]
         [SerializeField] private bool autoConfigureParts = true;
         [SerializeField] private bool autoAddHighlights = true;
+        [Tooltip("SharedLayer supports any part count and uses socket filters to enforce one correct socket per part. UniquePerPart is kept for compatibility with older setups.")]
+        [SerializeField] private InteractionLayerMode interactionLayerMode = InteractionLayerMode.SharedLayer;
+        [SerializeField] private int sharedInteractionLayerBit = 8;
         [SerializeField] private int interactionLayerStartBit = 8;
         [SerializeField] private float socketBoundsPadding = 1.15f;
         [SerializeField] private bool hideSocketsUntilSeparated = true;
 
         [Header("Socket Ghosts")]
         [SerializeField] private bool showSocketGhosts = true;
-        [SerializeField] private Color socketGhostColor = new Color(0.82f, 0.84f, 0.86f, 0.2f);
+        [SerializeField] private Color socketGhostColor = new Color(0.45f, 0.48f, 0.52f, 0.35f);
         [SerializeField] private float socketRevealDistance = 0.12f;
         [SerializeField] private float socketGhostHideDistance = 0.025f;
         [SerializeField] private float socketGhostReleaseMargin = 0.02f;
@@ -91,6 +94,7 @@ namespace DemoMedicine.Anatomy
 
         private void OnValidate()
         {
+            sharedInteractionLayerBit = Mathf.Clamp(sharedInteractionLayerBit, 0, 31);
             interactionLayerStartBit = Mathf.Clamp(interactionLayerStartBit, 0, 30);
             socketBoundsPadding = Mathf.Max(1f, socketBoundsPadding);
             socketRevealDistance = Mathf.Max(0.01f, socketRevealDistance);
@@ -255,11 +259,11 @@ namespace DemoMedicine.Anatomy
                 partsMask.value |= partBinding.grabInteractable.interactionLayers.value;
             }
 
-            var interactors = FindObjectsByType<XRBaseInteractor>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            var interactors = FindObjectsByType<XRDirectInteractor>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             foreach (var interactor in interactors)
             {
-                if (interactor == null || interactor is XRSocketInteractor)
+                if (interactor == null)
                 {
                     continue;
                 }
@@ -378,14 +382,18 @@ namespace DemoMedicine.Anatomy
             partBindings.Clear();
 
             var anatomyParts = GetComponentsInChildren<AnatomyPart>(true);
-            var maxParts = 32 - interactionLayerStartBit;
 
-            if (anatomyParts.Length > maxParts)
+            if (interactionLayerMode == InteractionLayerMode.UniquePerPart)
             {
-                Debug.LogWarning(
-                    $"Only {maxParts} unique interaction layer bits are available from bit {interactionLayerStartBit}. " +
-                    $"Extra parts will share the last available bit.",
-                    this);
+                var maxParts = 32 - interactionLayerStartBit;
+
+                if (anatomyParts.Length > maxParts)
+                {
+                    Debug.LogWarning(
+                        $"Only {maxParts} unique interaction layer bits are available from bit {interactionLayerStartBit}. " +
+                        "Switch Interaction Layer Mode to SharedLayer for anatomy groups with more parts.",
+                        this);
+                }
             }
 
             for (var index = 0; index < anatomyParts.Length; index++)
@@ -513,6 +521,8 @@ namespace DemoMedicine.Anatomy
             socketInteractor.selectEntered.AddListener(OnSocketSelectEntered);
             socketInteractor.selectExited.AddListener(OnSocketSelectExited);
             var socketMatchFilter = ConfigureSocketMatchFilter(socketGameObject, socketInteractor, partGrab);
+            // Keep the same pair check on the interactable side too; shared layers alone are too permissive.
+            ConfigureInteractableMatchFilter(partTransform.gameObject, socketInteractor, partGrab);
 
             var socketGhostRoot = EnsureSocketGhost(partTransform, socketTransform);
             if (socketGhostRoot != null)
@@ -546,20 +556,59 @@ namespace DemoMedicine.Anatomy
             XRSocketInteractor socketInteractor,
             XRGrabInteractable matchingInteractable)
         {
-            var socketMatchFilter = socketGameObject.GetComponent<AnatomySocketMatchFilter>();
+            return ConfigureSocketMatchFilter(socketGameObject, socketInteractor, matchingInteractable, false);
+        }
+
+        private static AnatomySocketMatchFilter ConfigureInteractableMatchFilter(
+            GameObject partGameObject,
+            XRSocketInteractor socketInteractor,
+            XRGrabInteractable matchingInteractable)
+        {
+            return ConfigureSocketMatchFilter(partGameObject, socketInteractor, matchingInteractable, true);
+        }
+
+        private static AnatomySocketMatchFilter ConfigureSocketMatchFilter(
+            GameObject hostGameObject,
+            XRSocketInteractor socketInteractor,
+            XRGrabInteractable matchingInteractable,
+            bool isInteractableHost)
+        {
+            var socketMatchFilter = hostGameObject.GetComponent<AnatomySocketMatchFilter>();
 
             if (socketMatchFilter == null)
             {
-                socketMatchFilter = socketGameObject.AddComponent<AnatomySocketMatchFilter>();
+                socketMatchFilter = hostGameObject.AddComponent<AnatomySocketMatchFilter>();
             }
 
-            socketMatchFilter.Configure(socketInteractor, matchingInteractable);
+            socketMatchFilter.Configure(socketInteractor, matchingInteractable, isInteractableHost);
 
-            if (socketInteractor != null)
+            if (!isInteractableHost && socketInteractor != null)
             {
-                socketInteractor.targetFilter = socketMatchFilter;
-                socketInteractor.selectFilters.Remove(socketMatchFilter);
-                socketInteractor.selectFilters.Add(socketMatchFilter);
+                if (Application.isPlaying)
+                {
+                    socketInteractor.targetFilter = socketMatchFilter;
+                    socketInteractor.selectFilters.Remove(socketMatchFilter);
+                    socketInteractor.selectFilters.Add(socketMatchFilter);
+                }
+                else
+                {
+                    socketInteractor.startingTargetFilter = socketMatchFilter;
+                    socketInteractor.startingSelectFilters.Remove(socketMatchFilter);
+                    socketInteractor.startingSelectFilters.Add(socketMatchFilter);
+                }
+            }
+            else if (isInteractableHost && matchingInteractable != null)
+            {
+                if (Application.isPlaying)
+                {
+                    matchingInteractable.selectFilters.Remove(socketMatchFilter);
+                    matchingInteractable.selectFilters.Add(socketMatchFilter);
+                }
+                else
+                {
+                    matchingInteractable.startingSelectFilters.Remove(socketMatchFilter);
+                    matchingInteractable.startingSelectFilters.Add(socketMatchFilter);
+                }
             }
 
             return socketMatchFilter;
@@ -886,7 +935,7 @@ namespace DemoMedicine.Anatomy
 
             foreach (var partBinding in partBindings)
             {
-                if (partBinding?.grabInteractable == interactable)
+                if (ReferenceEquals(partBinding?.grabInteractable, interactable))
                 {
                     return partBinding;
                 }
@@ -904,7 +953,7 @@ namespace DemoMedicine.Anatomy
 
             foreach (var partBinding in partBindings)
             {
-                if (partBinding?.socketInteractor == interactor)
+                if (ReferenceEquals(partBinding?.socketInteractor, interactor))
                 {
                     return partBinding;
                 }
@@ -1085,96 +1134,82 @@ namespace DemoMedicine.Anatomy
             }
 
             var ghostRoot = EnsureChildTransform(socketTransform, "SocketGhost");
+            ClearGhostChildren(ghostRoot);
             ghostRoot.localPosition = Vector3.zero;
             ghostRoot.localRotation = Quaternion.identity;
             ghostRoot.localScale = Vector3.one * socketGhostScale;
 
-            if (ghostRoot.childCount == 0)
+            var sharedGhostMaterial = GetSocketGhostMaterial();
+            for (var i = 0; i < sourceRoot.childCount; i++)
             {
-                foreach (var sourceRenderer in sourceRoot.GetComponentsInChildren<MeshRenderer>(true))
-                {
-                    var sourceTransform = sourceRenderer.transform;
-                    var ghostTransform = EnsureGhostPath(sourceRoot, sourceTransform, ghostRoot);
-                    ghostTransform.localPosition = sourceTransform.localPosition;
-                    ghostTransform.localRotation = sourceTransform.localRotation;
-                    ghostTransform.localScale = sourceTransform.localScale;
-
-                    var sourceMeshFilter = sourceTransform.GetComponent<MeshFilter>();
-                    if (sourceMeshFilter == null || sourceMeshFilter.sharedMesh == null)
-                    {
-                        continue;
-                    }
-
-                    var ghostMeshFilter = ghostTransform.GetComponent<MeshFilter>();
-                    if (ghostMeshFilter == null)
-                    {
-                        ghostMeshFilter = ghostTransform.gameObject.AddComponent<MeshFilter>();
-                    }
-
-                    ghostMeshFilter.sharedMesh = sourceMeshFilter.sharedMesh;
-
-                    var ghostRenderer = ghostTransform.GetComponent<MeshRenderer>();
-                    if (ghostRenderer == null)
-                    {
-                        ghostRenderer = ghostTransform.gameObject.AddComponent<MeshRenderer>();
-                    }
-
-                    var sharedGhostMaterial = GetSocketGhostMaterial();
-                    var sourceMaterialCount = Mathf.Max(1, sourceRenderer.sharedMaterials.Length);
-                    var ghostMaterials = new Material[sourceMaterialCount];
-
-                    for (var i = 0; i < sourceMaterialCount; i++)
-                    {
-                        ghostMaterials[i] = sharedGhostMaterial;
-                    }
-
-                    ghostRenderer.sharedMaterials = ghostMaterials;
-                    ghostRenderer.shadowCastingMode = ShadowCastingMode.Off;
-                    ghostRenderer.receiveShadows = false;
-                    ghostRenderer.lightProbeUsage = LightProbeUsage.Off;
-                    ghostRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
-                }
+                CloneGhostHierarchy(sourceRoot.GetChild(i), ghostRoot, sharedGhostMaterial);
             }
 
             return ghostRoot;
         }
 
-        private Transform EnsureGhostPath(Transform sourceRoot, Transform sourceTransform, Transform ghostRoot)
+        private static Transform CloneGhostHierarchy(Transform sourceTransform, Transform ghostParent, Material sharedGhostMaterial)
         {
-            if (sourceTransform == sourceRoot)
+            if (sourceTransform == null || ghostParent == null)
             {
-                return ghostRoot;
+                return null;
             }
 
-            var hierarchy = new Stack<Transform>();
-            var current = sourceTransform;
+            var ghostNode = new GameObject(sourceTransform.name).transform;
+            ghostNode.SetParent(ghostParent, false);
+            ghostNode.localPosition = sourceTransform.localPosition;
+            ghostNode.localRotation = sourceTransform.localRotation;
+            ghostNode.localScale = sourceTransform.localScale;
 
-            while (current != null && current != sourceRoot)
+            var sourceMeshFilter = sourceTransform.GetComponent<MeshFilter>();
+            var sourceRenderer = sourceTransform.GetComponent<MeshRenderer>();
+            if (sourceMeshFilter != null && sourceMeshFilter.sharedMesh != null && sourceRenderer != null)
             {
-                hierarchy.Push(current);
-                current = current.parent;
-            }
+                var ghostMeshFilter = ghostNode.gameObject.AddComponent<MeshFilter>();
+                ghostMeshFilter.sharedMesh = sourceMeshFilter.sharedMesh;
 
-            var ghostParent = ghostRoot;
-
-            while (hierarchy.Count > 0)
-            {
-                var sourceNode = hierarchy.Pop();
-                var ghostNode = ghostParent.Find(sourceNode.name);
-
-                if (ghostNode == null)
+                var ghostRenderer = ghostNode.gameObject.AddComponent<MeshRenderer>();
+                var sourceMaterialCount = Mathf.Max(1, sourceRenderer.sharedMaterials.Length);
+                var ghostMaterials = new Material[sourceMaterialCount];
+                for (var i = 0; i < sourceMaterialCount; i++)
                 {
-                    ghostNode = new GameObject(sourceNode.name).transform;
-                    ghostNode.SetParent(ghostParent, false);
+                    ghostMaterials[i] = sharedGhostMaterial;
                 }
 
-                ghostNode.localPosition = sourceNode.localPosition;
-                ghostNode.localRotation = sourceNode.localRotation;
-                ghostNode.localScale = sourceNode.localScale;
-                ghostParent = ghostNode;
+                ghostRenderer.sharedMaterials = ghostMaterials;
+                ghostRenderer.shadowCastingMode = ShadowCastingMode.Off;
+                ghostRenderer.receiveShadows = false;
+                ghostRenderer.lightProbeUsage = LightProbeUsage.Off;
+                ghostRenderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
             }
 
-            return ghostParent;
+            for (var i = 0; i < sourceTransform.childCount; i++)
+            {
+                CloneGhostHierarchy(sourceTransform.GetChild(i), ghostNode, sharedGhostMaterial);
+            }
+
+            return ghostNode;
+        }
+
+        private static void ClearGhostChildren(Transform ghostRoot)
+        {
+            if (ghostRoot == null)
+            {
+                return;
+            }
+
+            for (var i = ghostRoot.childCount - 1; i >= 0; i--)
+            {
+                var child = ghostRoot.GetChild(i);
+                if (Application.isPlaying)
+                {
+                    UnityEngine.Object.Destroy(child.gameObject);
+                }
+                else
+                {
+                    UnityEngine.Object.DestroyImmediate(child.gameObject);
+                }
+            }
         }
 
         private Material GetSocketGhostMaterial()
@@ -1272,10 +1307,18 @@ namespace DemoMedicine.Anatomy
 
         private InteractionLayerMask GetMaskForIndex(int index)
         {
-            var bitIndex = Mathf.Min(interactionLayerStartBit + index, 31);
+            var bitIndex = interactionLayerMode == InteractionLayerMode.SharedLayer
+                ? sharedInteractionLayerBit
+                : Mathf.Min(interactionLayerStartBit + index, 31);
             var mask = new InteractionLayerMask();
             mask.value = 1 << bitIndex;
             return mask;
+        }
+
+        private enum InteractionLayerMode
+        {
+            SharedLayer,
+            UniquePerPart
         }
 
         [Serializable]

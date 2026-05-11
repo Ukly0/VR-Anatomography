@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3525894664182222949
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8264318541147179724}
+  - component: {fileID: 619745699540810720}
+  m_Layer: 0
+  m_Name: PF_Sesamoid bone of right foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8264318541147179724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3525894664182222949}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 509847045373793569}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &619745699540810720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3525894664182222949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c6c22da58b83d44b4cbf9ef57a0c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayName: Sesamoid bone of right foot
+  fmaId: FMA45097
+  bodySystem: Skeletal
+  region: Skeleton of right foot
+  layerName: Skeletal
+  sourceFileId: FJ929
+  representationId: BP62717
+  sourceAssetPath: Assets/External Assets/Medicine/BP62965_FMA3_2_1_inference_partof_FMA24224_Skeleton_of_right_foot/FJ929_BP62717_FMA45097_Sesamoid
+    bone of right foot.obj
+  sourceBoundsMin: {x: -83.2788, y: -172.693, z: -2.9636}
+  sourceBoundsMax: {x: -66.4778, y: -159.495, z: 4.8026}
+--- !u!1001 &43327710679069386
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8264318541147179724}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_Name
+      value: Sesamoid_bone_of_right_foot_Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102641116241020577, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65253c53c1ad2fc46884e0c74ec20ac3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+--- !u!4 &509847045373793569 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fc2a5ec99d2fc2149b3531cebebe6d5b, type: 3}
+  m_PrefabInstance: {fileID: 43327710679069386}
+  m_PrefabAsset: {fileID: 0}

@@ -12,6 +12,23 @@ BP..._partof_FMA..._Region_name
 
 The selected-folder builder creates part prefabs under `Assets/Anatomy/Prefabs/Parts/Skeletal/<Region name>` and a root prefab under `Assets/Anatomy/Prefabs/Layers`.
 
+To create a standalone grabbable parent assembly from a folder of part prefabs, select a folder under `Assets/Anatomy/Prefabs/Parts/Skeletal/...` and run `Tools > Anatomy > Create Assembly From Selected Parts Folder`. The tool adds every direct `AnatomyPart` prefab in that folder under the scene `-- Anatomy --` root with this hierarchy:
+
+```text
+<FolderName>Assambly
+  <FolderName>GrabHandle
+    GrabAttach
+    VisualRoot
+      Canvas
+      PF_<PartNameA>
+      PF_<PartNameB>
+      ...
+```
+
+Each selected child prefab keeps its original local coordinates inside `VisualRoot`, and `VisualRoot` keeps the same anatomical transform pattern used by the existing skull and rib assemblies. The generated `GrabAttach`, grab collider, and socket are placed from the visible renderer bounds of the full folder assembly, so assets whose mesh data is offset to its anatomical body position still grab and snap from the visible anatomy instead of from the prefab origin. The whole-assembly socket hides the world-space canvas while the assembly is docked, matching the skull and rib button behavior.
+
+Whole assemblies get an automatically selected XR interaction layer bit for their generated `GrabHandle` and matching whole socket, so a socket from one visible assembly does not accept another visible assembly. Child parts still use the shared part layer and `AnatomySocketMatchFilter` to avoid exhausting interaction layer bits. The generated whole socket also includes a `SocketGhost` clone of the visible assembly; it stays hidden by default and only appears while the whole assembly is being grabbed near its socket, then hides again when the assembly is docked or moved away.
+
 The generated structure is:
 
 ```text
@@ -56,6 +73,8 @@ For long anatomy groups that mainly grow along one axis, such as `Set of all ver
 
 Use `Tools > Anatomy > Setup Selected Skull Bone Sockets` after selecting the `Skull` object in the scene.
 
+For other anatomy groups, such as `Rib cage` or `Set of all vertebrae`, select the object that has or contains the `AnatomyExploder` and use `Tools > Anatomy > Setup Selected Anatomy Sockets`.
+
 The setup tool:
 
 - adds `AnatomyBoneSocketController` to the selected skull,
@@ -63,6 +82,7 @@ The setup tool:
 - adds grab/collider setup to each skull bone,
 - disables the incorrect socket on the whole skull object,
 - adds XR UI raycasters to world-space canvases if they are missing.
+- uses one shared interaction layer by default and relies on `AnatomySocketMatchFilter` so each part only fits in its own socket. Use `UniquePerPart` only for legacy setups that intentionally need one interaction layer per part.
 
 At runtime the skull behaves in two modes:
 
